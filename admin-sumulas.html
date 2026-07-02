@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Súmulas · Painel de Facilitação · PGE em Campo 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0b1526; --bg-2:#0f1d33; --card:#142440; --card-border:#22375c;
+  --text:#f4f6fb; --text-dim:#9db0cc; --green-cta:#1fa85a;
+  --europa:#2f6fed; --americas:#24a854; --africa:#e0921e; --asia:#d93a3a;
+  --radius:18px; --radius-sm:10px; --shadow:0 12px 30px rgba(0,0,0,.35);
+}
+* { box-sizing:border-box; }
+html,body { margin:0; padding:0; background:radial-gradient(120% 120% at 50% -10%, var(--bg-2) 0%, var(--bg) 55%); color:var(--text); font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; min-height:100vh; }
+.app { max-width:720px; margin:0 auto; min-height:100vh; padding:20px 20px 40px; }
+.brand { display:flex; align-items:center; gap:10px; margin-bottom:6px; }
+.brand-badge { width:40px; height:40px; border-radius:10px; border:2px solid var(--text); display:flex; align-items:center; justify-content:center; font-size:20px; }
+.brand-name { font-family:"Poppins","Inter",sans-serif; font-weight:800; font-size:15px; }
+.brand-name small { display:block; font-weight:500; font-size:11px; color:var(--text-dim); letter-spacing:1px; }
+.bars { display:flex; gap:8px; margin:14px 0 22px; }
+.bars span { flex:1; height:6px; border-radius:4px; }
+.bars .b-europa{background:var(--europa)} .bars .b-americas{background:var(--americas)} .bars .b-africa{background:var(--africa)} .bars .b-asia{background:var(--asia)}
+h1 { font-family:"Poppins","Inter",sans-serif; font-weight:800; font-size:24px; margin:0 0 6px; }
+.subtitle { color:var(--text-dim); font-size:14px; margin:0 0 20px; }
+.field { margin-bottom:16px; }
+.field input { width:100%; padding:14px 16px; border-radius:var(--radius-sm); border:1.5px solid var(--card-border); background:var(--card); color:var(--text); font-size:16px; outline:none; }
+.field input:focus{border-color:var(--green-cta)}
+.btn { display:block; width:100%; padding:16px 20px; border-radius:999px; border:none; font-size:16px; font-weight:700; font-family:inherit; cursor:pointer; background:var(--green-cta); color:#fff; }
+.icon-btn { background:var(--card); border:1.5px solid var(--card-border); color:var(--text); width:38px; height:38px; border-radius:10px; cursor:pointer; font-size:16px; }
+.stat-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:24px; }
+.stat-card { background:var(--card); border:1.5px solid var(--card-border); border-radius:var(--radius-sm); padding:14px; text-align:center; }
+.stat-card .stat-value { font-family:"Poppins","Inter",sans-serif; font-weight:800; font-size:24px; }
+.stat-card .stat-label { font-size:10.5px; color:var(--text-dim); margin-top:2px; text-transform:uppercase; letter-spacing:.5px; }
+.refresh-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+.refresh-row .last-update { font-size:12px; color:var(--text-dim); }
+.section-title { font-family:"Poppins","Inter",sans-serif; font-weight:700; font-size:12.5px; text-transform:uppercase; letter-spacing:1px; color:var(--text-dim); margin:22px 0 10px; }
+.team-row { background:var(--card); border:1.5px solid var(--card-border); border-radius:var(--radius-sm); padding:14px 16px; margin-bottom:10px; cursor:pointer; }
+.team-row-top { display:flex; align-items:center; gap:10px; }
+.team-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+.team-name { flex:1; font-weight:700; font-size:15px; }
+.team-status { font-size:12px; font-weight:700; padding:4px 10px; border-radius:999px; }
+.status-ok { background:rgba(31,168,90,.18); color:#5fe39a; }
+.status-pending { background:rgba(217,58,58,.15); color:#ff9a9a; }
+.team-detail { display:none; margin-top:14px; padding-top:14px; border-top:1px solid var(--card-border); font-size:13.5px; line-height:1.6; }
+.team-detail.open { display:block; }
+.team-detail .d-label { color:var(--text-dim); font-weight:600; font-size:11.5px; text-transform:uppercase; letter-spacing:.5px; margin-top:12px; }
+.team-detail .d-label:first-child { margin-top:0; }
+.admin-lock { display:flex; flex-direction:column; justify-content:center; min-height:60vh; }
+.field-error { color:var(--asia); font-size:13px; margin-top:6px; display:none; }
+.field-error.show{display:block}
+.spinner { width:16px; height:16px; border:2.5px solid rgba(255,255,255,.35); border-top-color:#fff; border-radius:50%; animation:spin .7s linear infinite; display:inline-block; vertical-align:middle; margin-right:8px; }
+@keyframes spin{to{transform:rotate(360deg)}}
+.screen{display:none} .screen.active{display:block}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="brand">
+    <div class="brand-badge">📋</div>
+    <div class="brand-name">PGE EM CAMPO<small>PAINEL DE SÚMULAS</small></div>
+  </div>
+  <div class="bars"><span class="b-europa"></span><span class="b-americas"></span><span class="b-africa"></span><span class="b-asia"></span></div>
+
+  <section class="screen active" id="screen-lock">
+    <div class="admin-lock">
+      <h1>Acesso restrito</h1>
+      <p class="subtitle">Digite a senha de administrador para ver as súmulas.</p>
+      <div class="field">
+        <input type="password" id="input-senha" placeholder="••••••••">
+        <div class="field-error" id="error-senha">Senha incorreta.</div>
+      </div>
+      <button class="btn" id="btn-entrar">Entrar</button>
+    </div>
+  </section>
+
+  <section class="screen" id="screen-dashboard">
+    <div class="refresh-row">
+      <span class="last-update" id="last-update">Carregando...</span>
+      <button class="icon-btn" id="btn-refresh" title="Atualizar">⟳</button>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-value" id="stat-recebidas">–</div><div class="stat-label">Recebidas</div></div>
+      <div class="stat-card"><div class="stat-value" id="stat-pendentes">–</div><div class="stat-label">Pendentes</div></div>
+      <div class="stat-card"><div class="stat-value" id="stat-total">20</div><div class="stat-label">Total de times</div></div>
+    </div>
+
+    <div class="section-title">Times — clique para ver a súmula completa</div>
+    <div id="teams-list"></div>
+  </section>
+
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+// ============================================================
+// COLE AQUI AS MESMAS CHAVES DO FIREBASE
+// ============================================================
+const firebaseConfig = {
+  apiKey: "AIzaSyAAdgthTX4Fw7xSGCk5MEOxblHK70drbX0",
+  authDomain: "pge-em-campo-2026-5457b.firebaseapp.com",
+  projectId: "pge-em-campo-2026-5457b",
+  storageBucket: "pge-em-campo-2026-5457b.firebasestorage.app",
+  messagingSenderId: "193175371500",
+  appId: "1:193175371500:web:1fecfae5b1dc421e87efc9"
+};
+const ADMIN_PASSWORD = "pge2026";
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const TIMES = {
+  alemanha:{nome:"Alemanha",continente:"europa"}, franca:{nome:"França",continente:"europa"},
+  portugal:{nome:"Portugal",continente:"europa"}, italia:{nome:"Itália",continente:"europa"},
+  espanha:{nome:"Espanha",continente:"europa"},
+  brasil:{nome:"Brasil",continente:"americas"}, argentina:{nome:"Argentina",continente:"americas"},
+  mexico:{nome:"México",continente:"americas"}, canada:{nome:"Canadá",continente:"americas"},
+  chile:{nome:"Chile",continente:"americas"},
+  ruanda:{nome:"Ruanda",continente:"africa"}, africadosul:{nome:"África do Sul",continente:"africa"},
+  quenia:{nome:"Quênia",continente:"africa"}, egito:{nome:"Egito",continente:"africa"},
+  marrocos:{nome:"Marrocos",continente:"africa"},
+  singapura:{nome:"Singapura",continente:"asia"}, japao:{nome:"Japão",continente:"asia"},
+  coreiadosul:{nome:"Coreia do Sul",continente:"asia"}, india:{nome:"Índia",continente:"asia"},
+  emirados:{nome:"Emirados",continente:"asia"}
+};
+
+const CORES = { europa:"var(--europa)", americas:"var(--americas)", africa:"var(--africa)", asia:"var(--asia)" };
+
+const inputSenha = document.getElementById("input-senha");
+const errorSenha = document.getElementById("error-senha");
+
+document.getElementById("btn-entrar").addEventListener("click", tentarEntrar);
+inputSenha.addEventListener("keydown", e => { if (e.key === "Enter") tentarEntrar(); });
+
+function tentarEntrar() {
+  if (inputSenha.value === ADMIN_PASSWORD) {
+    document.getElementById("screen-lock").classList.remove("active");
+    document.getElementById("screen-dashboard").classList.add("active");
+    carregar();
+  } else {
+    errorSenha.classList.add("show");
+  }
+}
+
+document.getElementById("btn-refresh").addEventListener("click", carregar);
+
+function formatarHora(timestamp) {
+  if (!timestamp) return "";
+  const d = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+  return d.toLocaleString("pt-BR", { hour: "2-digit", minute: "2-digit", day: "2-digit", month: "2-digit" });
+}
+
+async function carregar() {
+  const lastUpdate = document.getElementById("last-update");
+  lastUpdate.innerHTML = `<span class="spinner"></span> Atualizando...`;
+
+  try {
+    const snap = await getDocs(collection(db, "sumulas"));
+    const recebidas = {};
+    snap.docs.forEach(d => { recebidas[d.id] = d.data(); });
+
+    document.getElementById("stat-recebidas").textContent = Object.keys(recebidas).length;
+    document.getElementById("stat-pendentes").textContent = 20 - Object.keys(recebidas).length;
+
+    const lista = document.getElementById("teams-list");
+    lista.innerHTML = "";
+
+    Object.entries(TIMES).forEach(([id, t]) => {
+      const dados = recebidas[id];
+      const row = document.createElement("div");
+      row.className = "team-row";
+
+      row.innerHTML = `
+        <div class="team-row-top">
+          <div class="team-dot" style="background:${CORES[t.continente]}"></div>
+          <div class="team-name">${t.nome}</div>
+          <div class="team-status ${dados ? 'status-ok' : 'status-pending'}">
+            ${dados ? 'Recebida ' + formatarHora(dados.timestamp) : 'Pendente'}
+          </div>
+        </div>
+        <div class="team-detail" id="detail-${id}">
+          ${dados ? renderDetalhe(dados) : '<em style="color:var(--text-dim)">Súmula ainda não enviada.</em>'}
+        </div>
+      `;
+
+      row.addEventListener("click", () => {
+        document.getElementById(`detail-${id}`).classList.toggle("open");
+      });
+
+      lista.appendChild(row);
+    });
+
+    lastUpdate.textContent = `Atualizado às ${new Date().toLocaleTimeString("pt-BR")}`;
+  } catch (err) {
+    console.error(err);
+    lastUpdate.textContent = "Erro ao carregar dados.";
+  }
+}
+
+function renderDetalhe(d) {
+  return `
+    <div class="d-label">Capitão</div>${escapeHtml(d.capitao)}
+    <div class="d-label">Relator</div>${escapeHtml(d.relator)}
+    <div class="d-label">Integrantes presentes</div>${escapeHtml(d.integrantesPresentes)}
+    <div class="d-label">Cartões Amarelos</div>${escapeHtml(d.cartoesAmarelos) || '—'}
+    <div class="d-label">Cartões Vermelhos</div>${escapeHtml(d.cartoesVermelhos) || '—'}
+    <div class="d-label">Causa-raiz</div>${escapeHtml(d.causaRaiz)}
+    <div class="d-label">Proposta de solução</div>${escapeHtml(d.propostaSolucao)}
+    <div class="d-label">Indicador de sucesso</div>${escapeHtml(d.indicadorSucesso)}
+    <div class="d-label">Próximo passo</div>${escapeHtml(d.proximoPasso)}
+  `;
+}
+
+function escapeHtml(str) {
+  if (!str) return "";
+  const div = document.createElement("div");
+  div.textContent = str;
+  return div.innerHTML.replace(/\n/g, "<br>");
+}
+</script>
+</body>
+</html>

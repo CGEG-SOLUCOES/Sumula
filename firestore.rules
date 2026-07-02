@@ -1,0 +1,20 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /sumulas/{paisId} {
+      allow read: if true;
+
+      allow create: if !exists(/databases/$(database)/documents/sumulas/$(paisId))
+                    && request.resource.data.keys().hasAll([
+                         'pais', 'continente', 'capitao', 'relator',
+                         'integrantesPresentes', 'causaRaiz', 'propostaSolucao',
+                         'indicadorSucesso', 'proximoPasso', 'timestamp'
+                       ])
+                    && request.resource.data.continente in ['europa','americas','africa','asia'];
+
+      allow update, delete: if false;
+    }
+  }
+}

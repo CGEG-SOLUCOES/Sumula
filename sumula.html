@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<title>Súmula Oficial · PGE em Campo 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0b1526; --bg-2: #0f1d33; --card: #142440; --card-border: #22375c;
+  --text: #f4f6fb; --text-dim: #9db0cc; --green-cta: #1fa85a; --green-cta-hover: #189149;
+  --europa: #2f6fed; --americas: #24a854; --africa: #e0921e; --asia: #d93a3a;
+  --radius: 18px; --radius-sm: 10px; --shadow: 0 12px 30px rgba(0,0,0,.35);
+}
+* { box-sizing: border-box; }
+html, body { margin:0; padding:0; background: radial-gradient(120% 120% at 50% -10%, var(--bg-2) 0%, var(--bg) 55%); color: var(--text); font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; min-height:100vh; -webkit-tap-highlight-color:transparent; }
+.app { max-width:520px; margin:0 auto; min-height:100vh; padding:20px 20px 40px; }
+.brand { display:flex; align-items:center; gap:10px; margin-bottom:6px; }
+.brand-badge { width:40px; height:40px; border-radius:10px; border:2px solid var(--text); display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
+.brand-name { font-family:"Poppins","Inter",sans-serif; font-weight:800; font-size:15px; line-height:1.15; }
+.brand-name small { display:block; font-weight:500; font-size:11px; color:var(--text-dim); letter-spacing:1px; }
+.bars { display:flex; gap:8px; margin:14px 0 22px; }
+.bars span { flex:1; height:6px; border-radius:4px; }
+.bars .b-europa{background:var(--europa)} .bars .b-americas{background:var(--americas)} .bars .b-africa{background:var(--africa)} .bars .b-asia{background:var(--asia)}
+h1 { font-family:"Poppins","Inter",sans-serif; font-weight:800; font-size:24px; line-height:1.2; margin:0 0 6px; }
+.subtitle { color:var(--text-dim); font-size:14px; line-height:1.5; margin:0 0 20px; }
+.team-badge { display:flex; align-items:center; gap:10px; padding:12px 16px; border-radius:var(--radius-sm); font-weight:800; font-size:16px; color:#fff; margin-bottom:20px; }
+.tb-europa{background:linear-gradient(150deg,var(--europa),#1c4fb0)} .tb-americas{background:linear-gradient(150deg,var(--americas),#16793a)} .tb-africa{background:linear-gradient(150deg,var(--africa),#a8660f)} .tb-asia{background:linear-gradient(150deg,var(--asia),#a11f1f)}
+.field { margin-bottom:16px; }
+.field label { display:block; font-size:13px; font-weight:600; color:var(--text-dim); margin-bottom:6px; }
+.field .hint { font-size:11.5px; color:var(--text-dim); margin-top:4px; opacity:.8; }
+.field input, .field select, .field textarea { width:100%; padding:13px 14px; border-radius:var(--radius-sm); border:1.5px solid var(--card-border); background:var(--card); color:var(--text); font-size:15.5px; font-family:inherit; outline:none; transition:border-color .15s; }
+.field textarea { min-height:90px; resize:vertical; }
+.field input:focus, .field select:focus, .field textarea:focus { border-color:var(--green-cta); }
+.field-error { color:var(--asia); font-size:13px; margin-top:6px; display:none; }
+.field-error.show{display:block}
+.btn { display:block; width:100%; padding:16px 20px; border-radius:999px; border:none; font-size:16px; font-weight:700; font-family:inherit; cursor:pointer; text-align:center; transition:transform .12s,filter .12s,opacity .12s; }
+.btn:active{transform:scale(.98)}
+.btn-primary{background:var(--green-cta); color:#fff}
+.btn-primary:disabled{opacity:.4; cursor:not-allowed}
+.section-title { font-family:"Poppins","Inter",sans-serif; font-weight:700; font-size:12.5px; text-transform:uppercase; letter-spacing:1px; color:var(--text-dim); margin:22px 0 10px; }
+.warning-box { background:rgba(217,58,58,.12); border:1.5px solid rgba(217,58,58,.4); border-radius:var(--radius-sm); padding:14px 16px; font-size:13px; color:#ff9a9a; margin:20px 0; line-height:1.5; }
+.screen { display:none; }
+.screen.active { display:block; animation:fadeIn .25s ease; }
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.thankyou { display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:14px; padding:60px 0; }
+.thankyou .big-emoji{font-size:56px}
+.thankyou .timestamp { font-size:13px; color:var(--text-dim); margin-top:8px; }
+.spinner { width:18px; height:18px; border:2.5px solid rgba(255,255,255,.35); border-top-color:#fff; border-radius:50%; animation:spin .7s linear infinite; display:inline-block; vertical-align:middle; margin-right:8px; }
+@keyframes spin{to{transform:rotate(360deg)}}
+.toast { position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(20px); background:#1a2c4a; border:1.5px solid var(--card-border); color:var(--text); padding:14px 20px; border-radius:var(--radius-sm); font-size:14px; max-width:90%; box-shadow:var(--shadow); opacity:0; pointer-events:none; transition:all .25s ease; z-index:999; }
+.toast.show{opacity:1; transform:translateX(-50%) translateY(0)}
+.toast.error{border-color:var(--asia); background:rgba(217,58,58,.15)}
+.loading-lock { text-align:center; padding:60px 20px; color:var(--text-dim); }
+select option { background: var(--card); color: var(--text); }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="brand">
+    <div class="brand-badge">📋</div>
+    <div class="brand-name">PGE EM CAMPO<small>SÚMULA OFICIAL DA PARTIDA</small></div>
+  </div>
+  <div class="bars">
+    <span class="b-europa"></span><span class="b-americas"></span><span class="b-africa"></span><span class="b-asia"></span>
+  </div>
+
+  <!-- CHECANDO -->
+  <div class="loading-lock" id="loading-lock">
+    <span class="spinner"></span> Carregando...
+  </div>
+
+  <!-- SELEÇÃO DE PAÍS (só aparece se o QR não vier com o país definido) -->
+  <section class="screen" id="screen-select-pais">
+    <h1>Qual time é o seu?</h1>
+    <p class="subtitle">Selecione o país do seu time para preencher a súmula.</p>
+    <div class="field">
+      <label for="select-pais">Eixo / Continente / País</label>
+      <select id="select-pais"></select>
+    </div>
+    <button class="btn btn-primary" id="btn-confirmar-pais">Continuar</button>
+  </section>
+
+  <!-- JÁ ENVIADA -->
+  <section class="screen" id="screen-ja-enviada">
+    <div class="thankyou">
+      <div class="big-emoji">✅</div>
+      <h1>Súmula já recebida!</h1>
+      <p class="subtitle" id="ja-enviada-texto">Este time já enviou a súmula oficial.</p>
+      <div class="timestamp" id="ja-enviada-hora"></div>
+    </div>
+  </section>
+
+  <!-- FORMULÁRIO -->
+  <section class="screen" id="screen-form">
+    <div class="team-badge" id="team-badge"></div>
+
+    <h1>Súmula Oficial</h1>
+    <p class="subtitle">Preenchido por um único integrante (Relator / Camisa 10). Envie até <strong>15h40</strong>. Após o envio não é mais possível editar.</p>
+
+    <div class="section-title">Identificação</div>
+
+    <div class="field">
+      <label for="input-capitao">Nome do Capitão</label>
+      <input type="text" id="input-capitao" placeholder="Nome completo">
+    </div>
+
+    <div class="field">
+      <label for="input-relator">Nome do Relator (Camisa 10)</label>
+      <input type="text" id="input-relator" placeholder="Nome completo">
+    </div>
+
+    <div class="field">
+      <label for="input-integrantes">Integrantes presentes</label>
+      <textarea id="input-integrantes" placeholder="Liste os nomes dos participantes presentes (um por linha ou separados por vírgula)"></textarea>
+    </div>
+
+    <div class="section-title">Diagnóstico</div>
+
+    <div class="field">
+      <label for="input-amarelos">Cartões Amarelos identificados</label>
+      <textarea id="input-amarelos" placeholder="Descreva os problemas operacionais identificados (gargalos, retrabalho, falhas de processo, comunicação). Deixe em branco se não houve."></textarea>
+      <div class="hint">Máximo de 5 por time, conforme regulamento.</div>
+    </div>
+
+    <div class="field">
+      <label for="input-vermelhos">Cartões Vermelhos identificados</label>
+      <textarea id="input-vermelhos" placeholder="Descreva violações graves identificadas (assédio, risco a pessoas, silêncio institucional). Deixe em branco se não houve. Lembre-se: sem citar nomes reais."></textarea>
+    </div>
+
+    <div class="field">
+      <label for="input-causa">Principal causa-raiz identificada pelo time</label>
+      <textarea id="input-causa" placeholder="Qual é a causa raiz por trás dos problemas identificados?"></textarea>
+    </div>
+
+    <div class="section-title">Proposta</div>
+
+    <div class="field">
+      <label for="input-proposta">Proposta de solução (objetivo SMART)</label>
+      <textarea id="input-proposta" placeholder="Específica, Mensurável, Atingível, Relevante e Temporal"></textarea>
+    </div>
+
+    <div class="field">
+      <label for="input-indicador">Indicador de sucesso</label>
+      <textarea id="input-indicador" placeholder="Como saberemos que funcionou?"></textarea>
+    </div>
+
+    <div class="field">
+      <label for="input-proximopasso">Próximo passo recomendado</label>
+      <textarea id="input-proximopasso" placeholder="Qual a próxima ação, quem é o responsável e qual o prazo?"></textarea>
+    </div>
+
+    <div class="warning-box">
+      ⚠️ Ao enviar, a súmula fica registrada permanentemente para este time. Não será possível editar depois.
+    </div>
+
+    <button class="btn btn-primary" id="btn-enviar" disabled>Enviar Súmula</button>
+  </section>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+  getFirestore, doc, getDoc, runTransaction, serverTimestamp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+// ============================================================
+// COLE AQUI AS MESMAS CHAVES DO FIREBASE USADAS NO SITE DE VOTAÇÃO
+// ============================================================
+const firebaseConfig = {
+  apiKey: "AIzaSyAAdgthTX4Fw7xSGCk5MEOxblHK70drbX0",
+  authDomain: "pge-em-campo-2026-5457b.firebaseapp.com",
+  projectId: "pge-em-campo-2026-5457b",
+  storageBucket: "pge-em-campo-2026-5457b.firebasestorage.app",
+  messagingSenderId: "193175371500",
+  appId: "1:193175371500:web:1fecfae5b1dc421e87efc9"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// ============================================================
+// TIMES (mesma estrutura do Guia do Jogo)
+// ============================================================
+const TIMES = {
+  alemanha:      { nome: "Alemanha",       continente: "europa" },
+  franca:        { nome: "França",          continente: "europa" },
+  portugal:      { nome: "Portugal",        continente: "europa" },
+  italia:        { nome: "Itália",          continente: "europa" },
+  espanha:       { nome: "Espanha",         continente: "europa" },
+  brasil:        { nome: "Brasil",          continente: "americas" },
+  argentina:     { nome: "Argentina",       continente: "americas" },
+  mexico:        { nome: "México",          continente: "americas" },
+  canada:        { nome: "Canadá",          continente: "americas" },
+  chile:         { nome: "Chile",           continente: "americas" },
+  ruanda:        { nome: "Ruanda",          continente: "africa" },
+  africadosul:   { nome: "África do Sul",   continente: "africa" },
+  quenia:        { nome: "Quênia",          continente: "africa" },
+  egito:         { nome: "Egito",           continente: "africa" },
+  marrocos:      { nome: "Marrocos",        continente: "africa" },
+  singapura:     { nome: "Singapura",       continente: "asia" },
+  japao:         { nome: "Japão",           continente: "asia" },
+  coreiadosul:   { nome: "Coreia do Sul",   continente: "asia" },
+  india:         { nome: "Índia",           continente: "asia" },
+  emirados:      { nome: "Emirados",        continente: "asia" }
+};
+
+const CONTINENTE_LABEL = {
+  europa: "Europa · Governança & Processos",
+  americas: "Américas · Comunicação & Atendimento",
+  africa: "África · Liderança, Cultura & Bem-Estar",
+  asia: "Ásia · Inovação & Transf. Digital"
+};
+
+let paisAtual = null;
+
+// ============================================================
+// HELPERS
+// ============================================================
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById("loading-lock").style.display = "none";
+  document.getElementById(id).classList.add("active");
+}
+
+function showToast(msg, isError = false) {
+  const toast = document.getElementById("toast");
+  toast.textContent = msg;
+  toast.classList.toggle("error", isError);
+  toast.classList.add("show");
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(() => toast.classList.remove("show"), 3200);
+}
+
+function formatarHora(timestamp) {
+  if (!timestamp) return "";
+  const d = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+  return d.toLocaleString("pt-BR", { hour: "2-digit", minute: "2-digit", day: "2-digit", month: "2-digit" });
+}
+
+// ============================================================
+// DESCOBRIR O PAÍS (via URL ?pais=xxx OU seleção manual)
+// ============================================================
+async function iniciar() {
+  const params = new URLSearchParams(window.location.search);
+  const paisUrl = params.get("pais");
+
+  if (paisUrl && TIMES[paisUrl]) {
+    paisAtual = paisUrl;
+    await checarEIniciarFormulario();
+  } else {
+    montarSelectPaises();
+    showScreen("screen-select-pais");
+  }
+}
+
+function montarSelectPaises() {
+  const select = document.getElementById("select-pais");
+  const continentesOrdenados = ["europa", "americas", "africa", "asia"];
+
+  continentesOrdenados.forEach(cont => {
+    const grupo = document.createElement("optgroup");
+    grupo.label = CONTINENTE_LABEL[cont];
+    Object.entries(TIMES)
+      .filter(([, t]) => t.continente === cont)
+      .forEach(([id, t]) => {
+        const opt = document.createElement("option");
+        opt.value = id;
+        opt.textContent = t.nome;
+        grupo.appendChild(opt);
+      });
+    select.appendChild(grupo);
+  });
+}
+
+document.getElementById("btn-confirmar-pais").addEventListener("click", async () => {
+  paisAtual = document.getElementById("select-pais").value;
+  document.getElementById("screen-select-pais").classList.remove("active");
+  document.getElementById("loading-lock").style.display = "block";
+  await checarEIniciarFormulario();
+});
+
+// ============================================================
+// CHECAR SE JÁ FOI ENVIADA
+// ============================================================
+async function checarEIniciarFormulario() {
+  const ref = doc(db, "sumulas", paisAtual);
+  try {
+    const snap = await getDoc(ref);
+    if (snap.exists()) {
+      const data = snap.data();
+      document.getElementById("ja-enviada-texto").textContent =
+        `A súmula do time ${TIMES[paisAtual].nome} já foi enviada por ${data.relator || "um integrante"}.`;
+      document.getElementById("ja-enviada-hora").textContent =
+        "Recebida às " + formatarHora(data.timestamp);
+      showScreen("screen-ja-enviada");
+    } else {
+      montarFormulario();
+      showScreen("screen-form");
+    }
+  } catch (err) {
+    console.error(err);
+    showToast("Erro ao verificar o time. Recarregue a página.", true);
+  }
+}
+
+// ============================================================
+// FORMULÁRIO
+// ============================================================
+function montarFormulario() {
+  const t = TIMES[paisAtual];
+  const badge = document.getElementById("team-badge");
+  badge.className = "team-badge tb-" + t.continente;
+  badge.textContent = `Time: ${t.nome} — ${CONTINENTE_LABEL[t.continente]}`;
+
+  const camposObrigatorios = [
+    "input-capitao", "input-relator", "input-integrantes",
+    "input-causa", "input-proposta", "input-indicador", "input-proximopasso"
+  ];
+
+  const btnEnviar = document.getElementById("btn-enviar");
+
+  function validar() {
+    const ok = camposObrigatorios.every(id => document.getElementById(id).value.trim().length > 0);
+    btnEnviar.disabled = !ok;
+  }
+
+  camposObrigatorios.forEach(id => {
+    document.getElementById(id).addEventListener("input", validar);
+  });
+
+  btnEnviar.addEventListener("click", enviarSumula);
+}
+
+async function enviarSumula() {
+  const btnEnviar = document.getElementById("btn-enviar");
+  btnEnviar.disabled = true;
+  btnEnviar.innerHTML = `<span class="spinner"></span> Enviando...`;
+
+  const dados = {
+    pais: paisAtual,
+    continente: TIMES[paisAtual].continente,
+    capitao: document.getElementById("input-capitao").value.trim(),
+    relator: document.getElementById("input-relator").value.trim(),
+    integrantesPresentes: document.getElementById("input-integrantes").value.trim(),
+    cartoesAmarelos: document.getElementById("input-amarelos").value.trim(),
+    cartoesVermelhos: document.getElementById("input-vermelhos").value.trim(),
+    causaRaiz: document.getElementById("input-causa").value.trim(),
+    propostaSolucao: document.getElementById("input-proposta").value.trim(),
+    indicadorSucesso: document.getElementById("input-indicador").value.trim(),
+    proximoPasso: document.getElementById("input-proximopasso").value.trim(),
+    timestamp: serverTimestamp()
+  };
+
+  const ref = doc(db, "sumulas", paisAtual);
+
+  try {
+    await runTransaction(db, async (transaction) => {
+      const existente = await transaction.get(ref);
+      if (existente.exists()) {
+        throw new Error("JA_ENVIADA");
+      }
+      transaction.set(ref, dados);
+    });
+
+    document.getElementById("ja-enviada-texto").textContent =
+      `Súmula do time ${TIMES[paisAtual].nome} enviada com sucesso!`;
+    document.getElementById("ja-enviada-hora").textContent =
+      "Recebida agora · " + new Date().toLocaleString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+    showScreen("screen-ja-enviada");
+  } catch (err) {
+    if (err.message === "JA_ENVIADA") {
+      showToast("Este time já enviou a súmula.", true);
+      await checarEIniciarFormulario();
+    } else {
+      console.error(err);
+      showToast("Não foi possível enviar. Verifique sua internet e tente novamente.", true);
+      btnEnviar.disabled = false;
+      btnEnviar.textContent = "Enviar Súmula";
+    }
+  }
+}
+
+iniciar();
+</script>
+</body>
+</html>
