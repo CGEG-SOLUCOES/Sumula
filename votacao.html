@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<title>PGE em Campo 2026 · Votação</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0b1526; --bg-2:#0f1d33; --card:#142440; --card-border:#22375c;
+  --text:#f4f6fb; --text-dim:#9db0cc; --green-cta:#1fa85a;
+  --europa:#2f6fed; --americas:#24a854; --africa:#e0921e; --asia:#d93a3a;
+  --radius:18px; --radius-sm:10px; --shadow:0 12px 30px rgba(0,0,0,.35);
+}
+* { box-sizing:border-box; }
+html,body { margin:0; padding:0; background:radial-gradient(120% 120% at 50% -10%, var(--bg-2) 0%, var(--bg) 55%); color:var(--text); font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; min-height:100vh; -webkit-tap-highlight-color:transparent; }
+.app { max-width:520px; margin:0 auto; min-height:100vh; padding:20px 20px 40px; display:flex; flex-direction:column; }
+.brand { display:flex; align-items:center; gap:10px; margin-bottom:6px; }
+.brand-badge { width:40px; height:40px; border-radius:10px; border:2px solid var(--text); display:flex; align-items:center; justify-content:center; font-size:20px; }
+.brand-name { font-family:"Poppins","Inter",sans-serif; font-weight:800; font-size:15px; line-height:1.15; }
+.brand-name small { display:block; font-weight:500; font-size:11px; color:var(--text-dim); letter-spacing:1px; }
+.bars { display:flex; gap:8px; margin:14px 0 22px; }
+.bars span { flex:1; height:6px; border-radius:4px; }
+.bars .b-europa{background:var(--europa)} .bars .b-americas{background:var(--americas)} .bars .b-africa{background:var(--africa)} .bars .b-asia{background:var(--asia)}
+h1 { font-family:"Poppins","Inter",sans-serif; font-weight:800; font-size:24px; line-height:1.2; margin:0 0 6px; }
+.subtitle { color:var(--text-dim); font-size:14px; line-height:1.5; margin:0 0 20px; }
+.step-tag { display:inline-block; font-size:12px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:var(--green-cta); margin-bottom:8px; }
+.screen { display:none; flex:1; flex-direction:column; }
+.screen.active { display:flex; animation:fadeIn .25s ease; }
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.screen-body { flex:1; }
+.field { margin-bottom:16px; }
+.field label { display:block; font-size:13px; font-weight:600; color:var(--text-dim); margin-bottom:6px; }
+.field select { width:100%; padding:14px 16px; border-radius:var(--radius-sm); border:1.5px solid var(--card-border); background:var(--card); color:var(--text); font-size:16px; outline:none; }
+select option { background:var(--card); color:var(--text); }
+.btn { display:block; width:100%; padding:16px 20px; border-radius:999px; border:none; font-size:16px; font-weight:700; font-family:inherit; cursor:pointer; text-align:center; transition:transform .12s,filter .12s,opacity .12s; }
+.btn:active{transform:scale(.98)}
+.btn-primary{background:var(--green-cta); color:#fff}
+.btn-primary:disabled{opacity:.4; cursor:not-allowed}
+.btn-ghost{background:transparent; color:var(--text-dim); border:1.5px solid var(--card-border)}
+.btn-row{display:flex; gap:10px; margin-top:10px}
+.btn-row .btn{flex:1}
+.actions{margin-top:20px}
+.rank-slots { display:flex; flex-direction:column; gap:10px; margin-bottom:22px; }
+.rank-slot { border:1.5px dashed var(--card-border); border-radius:var(--radius-sm); padding:12px 14px; display:flex; align-items:center; gap:12px; min-height:52px; background:var(--card); }
+.rank-slot .medal { width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:13px; flex-shrink:0; background:#22375c; color:var(--text-dim); }
+.rank-slot.filled .medal { background:var(--green-cta); color:#fff; }
+.rank-slot .slot-content { flex:1; font-weight:600; color:var(--text-dim); font-size:14px; }
+.rank-slot.filled .slot-content { color:var(--text); }
+.rank-slot .slot-remove { background:none; border:none; color:var(--text-dim); font-size:18px; cursor:pointer; padding:4px 8px; display:none; }
+.rank-slot.filled .slot-remove { display:block; }
+.continent-group { margin-bottom:18px; }
+.continent-group .cg-label { font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:.8px; margin-bottom:8px; padding-left:2px; }
+.cg-europa{color:var(--europa)} .cg-americas{color:var(--americas)} .cg-africa{color:var(--africa)} .cg-asia{color:var(--asia)}
+.vote-option { border-radius:var(--radius-sm); padding:12px 14px; margin-bottom:8px; display:flex; align-items:center; gap:10px; cursor:pointer; border:1.5px solid var(--card-border); background:var(--card); transition:transform .12s,opacity .15s,border-color .12s; }
+.vote-option:active{transform:scale(.98)}
+.vote-option .dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+.vote-option .name { font-weight:700; font-size:14.5px; flex:1; }
+.vote-option.used { opacity:.3; pointer-events:none; }
+.team-badge { display:flex; align-items:center; gap:10px; padding:12px 16px; border-radius:var(--radius-sm); font-weight:800; font-size:15px; color:#fff; margin-bottom:20px; }
+.tb-europa{background:linear-gradient(150deg,var(--europa),#1c4fb0)} .tb-americas{background:linear-gradient(150deg,var(--americas),#16793a)} .tb-africa{background:linear-gradient(150deg,var(--africa),#a8660f)} .tb-asia{background:linear-gradient(150deg,var(--asia),#a11f1f)}
+.summary-card { background:var(--card); border:1.5px solid var(--card-border); border-radius:var(--radius); padding:18px; margin-bottom:16px; }
+.summary-row { display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid var(--card-border); font-size:14px; }
+.summary-row:last-child{border-bottom:none}
+.summary-row .label{color:var(--text-dim)}
+.summary-row .value{font-weight:700}
+.warning-box { background:rgba(217,58,58,.12); border:1.5px solid rgba(217,58,58,.4); border-radius:var(--radius-sm); padding:14px 16px; font-size:13px; color:#ff9a9a; margin-bottom:20px; line-height:1.5; }
+.thankyou { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:14px; }
+.thankyou .big-emoji{font-size:56px}
+.toast { position:fixed; left:50%; bottom:24px; transform:translateX(-50%) translateY(20px); background:#1a2c4a; border:1.5px solid var(--card-border); color:var(--text); padding:14px 20px; border-radius:var(--radius-sm); font-size:14px; max-width:90%; box-shadow:var(--shadow); opacity:0; pointer-events:none; transition:all .25s ease; z-index:999; }
+.toast.show{opacity:1; transform:translateX(-50%) translateY(0)}
+.toast.error{border-color:var(--asia); background:rgba(217,58,58,.15)}
+.spinner { width:18px; height:18px; border:2.5px solid rgba(255,255,255,.35); border-top-color:#fff; border-radius:50%; animation:spin .7s linear infinite; display:inline-block; vertical-align:middle; margin-right:8px; }
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="brand">
+    <div class="brand-badge">⚽</div>
+    <div class="brand-name">PGE EM CAMPO<small>VOTAÇÃO OFICIAL · 2026</small></div>
+  </div>
+  <div class="bars"><span class="b-europa"></span><span class="b-americas"></span><span class="b-africa"></span><span class="b-asia"></span></div>
+
+  <!-- TELA 1 — ESCOLHA SEU PAÍS -->
+  <section class="screen active" id="screen-meupais">
+    <div class="screen-body">
+      <span class="step-tag">Passo 1 de 3</span>
+      <h1>Qual é o seu país?</h1>
+      <p class="subtitle">Selecione o país do seu time. Você vai votar nos outros 19.</p>
+      <div class="field">
+        <label for="select-meupais">Eixo / Continente / País</label>
+        <select id="select-meupais"></select>
+      </div>
+    </div>
+    <div class="actions">
+      <button class="btn btn-primary" id="btn-meupais-continuar">Continuar</button>
+    </div>
+  </section>
+
+  <!-- TELA 2 — VOTAÇÃO -->
+  <section class="screen" id="screen-votacao">
+    <div class="screen-body">
+      <span class="step-tag">Passo 2 de 3</span>
+      <h1>Coloque em ordem</h1>
+      <p class="subtitle">Toque nos países na ordem do 1º ao 3º lugar.</p>
+
+      <div class="rank-slots">
+        <div class="rank-slot" id="slot-1" data-pos="1"><div class="medal">1º</div><div class="slot-content">Toque em um país abaixo</div><button class="slot-remove" data-remove="1">×</button></div>
+        <div class="rank-slot" id="slot-2" data-pos="2"><div class="medal">2º</div><div class="slot-content">—</div><button class="slot-remove" data-remove="2">×</button></div>
+        <div class="rank-slot" id="slot-3" data-pos="3"><div class="medal">3º</div><div class="slot-content">—</div><button class="slot-remove" data-remove="3">×</button></div>
+      </div>
+
+      <div id="vote-options-container"></div>
+    </div>
+    <div class="actions">
+      <div class="btn-row">
+        <button class="btn btn-ghost" data-back="screen-meupais">Voltar</button>
+        <button class="btn btn-primary" id="btn-votacao-continuar" disabled>Continuar</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- TELA 3 — CONFIRMAÇÃO -->
+  <section class="screen" id="screen-confirmacao">
+    <div class="screen-body">
+      <span class="step-tag">Passo 3 de 3</span>
+      <h1>Confira seu voto</h1>
+      <p class="subtitle">Depois de enviar, não é mais possível alterar.</p>
+      <div class="summary-card" id="summary-card"></div>
+      <div class="warning-box">⚠️ Ao confirmar, seu voto é registrado permanentemente neste navegador/dispositivo.</div>
+    </div>
+    <div class="actions">
+      <div class="btn-row">
+        <button class="btn btn-ghost" data-back="screen-votacao">Voltar</button>
+        <button class="btn btn-primary" id="btn-confirmar-voto">Confirmar voto</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- TELA 4 — OBRIGADO -->
+  <section class="screen" id="screen-obrigado">
+    <div class="thankyou">
+      <div class="big-emoji">🏆</div>
+      <h1 id="obrigado-titulo">Voto registrado!</h1>
+      <p class="subtitle" id="obrigado-texto">Obrigado por participar da votação do PGE em Campo 2026.</p>
+    </div>
+  </section>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAAdgthTX4Fw7xSGCk5MEOxblHK70drbX0",
+  authDomain: "pge-em-campo-2026-5457b.firebaseapp.com",
+  projectId: "pge-em-campo-2026-5457b",
+  storageBucket: "pge-em-campo-2026-5457b.firebasestorage.app",
+  messagingSenderId: "193175371500",
+  appId: "1:193175371500:web:1fecfae5b1dc421e87efc9"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const LOCK_KEY = "pge_em_campo_2026_votou_pais";
+
+const TIMES = {
+  alemanha:{nome:"Alemanha",continente:"europa"}, franca:{nome:"França",continente:"europa"},
+  portugal:{nome:"Portugal",continente:"europa"}, italia:{nome:"Itália",continente:"europa"},
+  espanha:{nome:"Espanha",continente:"europa"},
+  brasil:{nome:"Brasil",continente:"americas"}, argentina:{nome:"Argentina",continente:"americas"},
+  mexico:{nome:"México",continente:"americas"}, canada:{nome:"Canadá",continente:"americas"},
+  chile:{nome:"Chile",continente:"americas"},
+  ruanda:{nome:"Ruanda",continente:"africa"}, africadosul:{nome:"África do Sul",continente:"africa"},
+  quenia:{nome:"Quênia",continente:"africa"}, egito:{nome:"Egito",continente:"africa"},
+  marrocos:{nome:"Marrocos",continente:"africa"},
+  singapura:{nome:"Singapura",continente:"asia"}, japao:{nome:"Japão",continente:"asia"},
+  coreiadosul:{nome:"Coreia do Sul",continente:"asia"}, india:{nome:"Índia",continente:"asia"},
+  emirados:{nome:"Emirados",continente:"asia"}
+};
+
+const CONTINENTE_LABEL = { europa:"Europa", americas:"Américas", africa:"África", asia:"Ásia" };
+const CONTINENTES_ORDEM = ["europa","americas","africa","asia"];
+
+const state = { meuPais:null, ranking:[null,null,null] };
+
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  window.scrollTo({top:0, behavior:"instant"});
+}
+function showToast(msg, isError=false) {
+  const toast = document.getElementById("toast");
+  toast.textContent = msg;
+  toast.classList.toggle("error", isError);
+  toast.classList.add("show");
+  clearTimeout(showToast._t);
+  showToast._t = setTimeout(() => toast.classList.remove("show"), 3200);
+}
+document.querySelectorAll("[data-back]").forEach(btn => btn.addEventListener("click", () => showScreen(btn.dataset.back)));
+
+// checagem inicial — já votou neste dispositivo?
+if (localStorage.getItem(LOCK_KEY) === "true") {
+  showScreen("screen-obrigado");
+  document.getElementById("obrigado-titulo").textContent = "Você já votou por aqui!";
+  document.getElementById("obrigado-texto").textContent = "Este dispositivo já registrou um voto para o PGE em Campo 2026. Obrigado por participar!";
+}
+
+// TELA 1
+const selectMeuPais = document.getElementById("select-meupais");
+CONTINENTES_ORDEM.forEach(cont => {
+  const grupo = document.createElement("optgroup");
+  grupo.label = CONTINENTE_LABEL[cont];
+  Object.entries(TIMES).filter(([,t]) => t.continente === cont).forEach(([id,t]) => {
+    const opt = document.createElement("option");
+    opt.value = id; opt.textContent = t.nome;
+    grupo.appendChild(opt);
+  });
+  selectMeuPais.appendChild(grupo);
+});
+
+document.getElementById("btn-meupais-continuar").addEventListener("click", () => {
+  state.meuPais = selectMeuPais.value;
+  buildVoteOptions();
+  showScreen("screen-votacao");
+});
+
+// TELA 2
+const voteOptionsContainer = document.getElementById("vote-options-container");
+const btnVotacaoContinuar = document.getElementById("btn-votacao-continuar");
+
+function buildVoteOptions() {
+  state.ranking = [null,null,null];
+  updateSlotsUI();
+  voteOptionsContainer.innerHTML = "";
+
+  CONTINENTES_ORDEM.forEach(cont => {
+    const paisesDoContinente = Object.entries(TIMES).filter(([id,t]) => t.continente === cont && id !== state.meuPais);
+    if (paisesDoContinente.length === 0) return;
+
+    const group = document.createElement("div");
+    group.className = "continent-group";
+    group.innerHTML = `<div class="cg-label cg-${cont}">${CONTINENTE_LABEL[cont]}</div>`;
+
+    paisesDoContinente.forEach(([id, t]) => {
+      const opt = document.createElement("div");
+      opt.className = "vote-option";
+      opt.dataset.id = id;
+      opt.innerHTML = `<div class="dot" style="background:var(--${cont})"></div><div class="name">${t.nome}</div>`;
+      opt.addEventListener("click", () => handlePick(id));
+      group.appendChild(opt);
+    });
+
+    voteOptionsContainer.appendChild(group);
+  });
+}
+
+function handlePick(id) {
+  const proximo = state.ranking.findIndex(v => v === null);
+  if (proximo === -1) return;
+  state.ranking[proximo] = id;
+  updateSlotsUI();
+}
+function handleRemove(pos) {
+  const idx = pos - 1;
+  for (let i = idx; i < state.ranking.length - 1; i++) state.ranking[i] = state.ranking[i+1];
+  state.ranking[state.ranking.length - 1] = null;
+  updateSlotsUI();
+}
+document.querySelectorAll(".slot-remove").forEach(btn => btn.addEventListener("click", () => handleRemove(Number(btn.dataset.remove))));
+
+function updateSlotsUI() {
+  [1,2,3].forEach(pos => {
+    const id = state.ranking[pos-1];
+    const slot = document.getElementById(`slot-${pos}`);
+    const content = slot.querySelector(".slot-content");
+    if (id) {
+      slot.classList.add("filled");
+      content.textContent = TIMES[id].nome;
+    } else {
+      slot.classList.remove("filled");
+      content.textContent = pos === 1 ? "Toque em um país abaixo" : "—";
+    }
+  });
+  document.querySelectorAll(".vote-option").forEach(opt => {
+    opt.classList.toggle("used", state.ranking.includes(opt.dataset.id));
+  });
+  btnVotacaoContinuar.disabled = state.ranking.some(v => v === null);
+}
+
+btnVotacaoContinuar.addEventListener("click", () => { buildSummary(); showScreen("screen-confirmacao"); });
+
+// TELA 3
+const summaryCard = document.getElementById("summary-card");
+const btnConfirmarVoto = document.getElementById("btn-confirmar-voto");
+
+function buildSummary() {
+  const meu = TIMES[state.meuPais];
+  const p1 = TIMES[state.ranking[0]], p2 = TIMES[state.ranking[1]], p3 = TIMES[state.ranking[2]];
+  summaryCard.innerHTML = `
+    <div class="summary-row"><span class="label">Seu país</span><span class="value">${meu.nome}</span></div>
+    <div class="summary-row"><span class="label">1º lugar</span><span class="value">${p1.nome}</span></div>
+    <div class="summary-row"><span class="label">2º lugar</span><span class="value">${p2.nome}</span></div>
+    <div class="summary-row"><span class="label">3º lugar</span><span class="value">${p3.nome}</span></div>
+  `;
+}
+
+btnConfirmarVoto.addEventListener("click", enviarVoto);
+
+async function enviarVoto() {
+  btnConfirmarVoto.disabled = true;
+  btnConfirmarVoto.innerHTML = `<span class="spinner"></span> Enviando...`;
+  try {
+    await addDoc(collection(db, "votos_pais"), {
+      paisEleitor: state.meuPais,
+      continenteEleitor: TIMES[state.meuPais].continente,
+      primeiro: state.ranking[0],
+      segundo: state.ranking[1],
+      terceiro: state.ranking[2],
+      timestamp: serverTimestamp()
+    });
+    localStorage.setItem(LOCK_KEY, "true");
+    document.getElementById("obrigado-titulo").textContent = "Voto registrado!";
+    document.getElementById("obrigado-texto").textContent = "Obrigado por participar da votação do PGE em Campo 2026. Os resultados serão anunciados no encerramento do evento.";
+    showScreen("screen-obrigado");
+  } catch (err) {
+    console.error(err);
+    showToast("Não foi possível enviar o voto. Verifique sua internet e tente novamente.", true);
+    btnConfirmarVoto.disabled = false;
+    btnConfirmarVoto.textContent = "Confirmar voto";
+  }
+}
+</script>
+</body>
+</html>
