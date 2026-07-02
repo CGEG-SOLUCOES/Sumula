@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PGE em Campo 2026 · Painel de Votação</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0b1526; --bg-2:#0f1d33; --card:#142440; --card-border:#22375c;
+  --text:#f4f6fb; --text-dim:#9db0cc; --green-cta:#1fa85a;
+  --europa:#2f6fed; --americas:#24a854; --africa:#e0921e; --asia:#d93a3a;
+  --radius:18px; --radius-sm:10px; --shadow:0 12px 30px rgba(0,0,0,.35);
+}
+* { box-sizing:border-box; }
+html,body { margin:0; padding:0; background:radial-gradient(120% 120% at 50% -10%, var(--bg-2) 0%, var(--bg) 55%); color:var(--text); font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; min-height:100vh; }
+.app { max-width:560px; margin:0 auto; min-height:100vh; padding:20px 20px 40px; }
+.brand { display:flex; align-items:center; gap:10px; margin-bottom:6px; }
+.brand-badge { width:40px; height:40px; border-radius:10px; border:2px solid var(--text); display:flex; align-items:center; justify-content:center; font-size:20px; }
+.brand-name { font-family:"Poppins","Inter",sans-serif; font-weight:800; font-size:15px; }
+.brand-name small { display:block; font-weight:500; font-size:11px; color:var(--text-dim); letter-spacing:1px; }
+.bars { display:flex; gap:8px; margin:14px 0 22px; }
+.bars span { flex:1; height:6px; border-radius:4px; }
+.bars .b-europa{background:var(--europa)} .bars .b-americas{background:var(--americas)} .bars .b-africa{background:var(--africa)} .bars .b-asia{background:var(--asia)}
+h1 { font-family:"Poppins","Inter",sans-serif; font-weight:800; font-size:24px; margin:0 0 6px; }
+.subtitle { color:var(--text-dim); font-size:14px; margin:0 0 20px; }
+.field { margin-bottom:16px; }
+.field label { display:block; font-size:13px; font-weight:600; color:var(--text-dim); margin-bottom:6px; }
+.field input { width:100%; padding:14px 16px; border-radius:var(--radius-sm); border:1.5px solid var(--card-border); background:var(--card); color:var(--text); font-size:16px; outline:none; }
+.field input:focus{border-color:var(--green-cta)}
+.field-error { color:var(--asia); font-size:13px; margin-top:6px; display:none; }
+.field-error.show{display:block}
+.btn { display:block; width:100%; padding:16px 20px; border-radius:999px; border:none; font-size:16px; font-weight:700; font-family:inherit; cursor:pointer; background:var(--green-cta); color:#fff; }
+.btn:disabled{opacity:.5}
+.icon-btn { background:var(--card); border:1.5px solid var(--card-border); color:var(--text); width:38px; height:38px; border-radius:10px; cursor:pointer; font-size:16px; }
+.tabs { display:flex; gap:8px; margin-bottom:18px; }
+.tab { flex:1; padding:10px; text-align:center; border-radius:999px; background:var(--card); border:1.5px solid var(--card-border); font-size:12.5px; font-weight:700; cursor:pointer; color:var(--text-dim); }
+.tab.active { background:var(--green-cta); color:#fff; border-color:var(--green-cta); }
+.stat-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:22px; }
+.stat-card { background:var(--card); border:1.5px solid var(--card-border); border-radius:var(--radius-sm); padding:14px; text-align:center; }
+.stat-card .stat-value { font-family:"Poppins","Inter",sans-serif; font-weight:800; font-size:24px; }
+.stat-card .stat-label { font-size:10.5px; color:var(--text-dim); margin-top:2px; text-transform:uppercase; letter-spacing:.5px; }
+.refresh-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+.refresh-row .last-update { font-size:12px; color:var(--text-dim); }
+.section-title { font-family:"Poppins","Inter",sans-serif; font-weight:700; font-size:12.5px; text-transform:uppercase; letter-spacing:1px; color:var(--text-dim); margin:22px 0 10px; }
+.ranking-list { display:flex; flex-direction:column; gap:9px; margin-bottom:10px; }
+.ranking-row { background:var(--card); border:1.5px solid var(--card-border); border-radius:var(--radius-sm); padding:12px 14px; }
+.ranking-row-top { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+.ranking-pos { font-family:"Poppins","Inter",sans-serif; font-weight:800; font-size:15px; width:22px; color:var(--text-dim); }
+.ranking-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+.ranking-name { flex:1; font-weight:700; font-size:14px; }
+.ranking-points { font-family:"Poppins","Inter",sans-serif; font-weight:800; font-size:15px; }
+.ranking-bar-track { height:7px; border-radius:5px; background:#1a2c4a; overflow:hidden; }
+.ranking-bar-fill { height:100%; border-radius:5px; transition:width .5s ease; }
+.admin-lock { display:flex; flex-direction:column; justify-content:center; min-height:60vh; }
+.spinner { width:16px; height:16px; border:2.5px solid rgba(255,255,255,.35); border-top-color:#fff; border-radius:50%; animation:spin .7s linear infinite; display:inline-block; vertical-align:middle; margin-right:8px; }
+@keyframes spin{to{transform:rotate(360deg)}}
+.screen{display:none} .screen.active{display:block}
+.panel { display:none; }
+.panel.active { display:block; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="brand">
+    <div class="brand-badge">⚽</div>
+    <div class="brand-name">PGE EM CAMPO<small>PAINEL DE VOTAÇÃO</small></div>
+  </div>
+  <div class="bars"><span class="b-europa"></span><span class="b-americas"></span><span class="b-africa"></span><span class="b-asia"></span></div>
+
+  <section class="screen active" id="screen-lock">
+    <div class="admin-lock">
+      <h1>Acesso restrito</h1>
+      <p class="subtitle">Entre com a conta de administrador para ver os resultados.</p>
+      <div class="field">
+        <label>E-mail</label>
+        <input type="email" id="input-email" placeholder="admin@exemplo.com" autocomplete="username">
+      </div>
+      <div class="field">
+        <label>Senha</label>
+        <input type="password" id="input-senha" placeholder="••••••••" autocomplete="current-password">
+        <div class="field-error" id="error-senha">E-mail ou senha incorretos.</div>
+      </div>
+      <button class="btn" id="btn-entrar">Entrar</button>
+    </div>
+  </section>
+
+  <section class="screen" id="screen-dashboard">
+    <div class="refresh-row">
+      <span class="last-update" id="last-update">Carregando...</span>
+      <div style="display:flex; gap:8px;">
+        <button class="icon-btn" id="btn-export" title="Exportar Excel">⬇️</button>
+        <button class="icon-btn" id="btn-refresh" title="Atualizar">⟳</button>
+      </div>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-card"><div class="stat-value" id="stat-total-votos">–</div><div class="stat-label">Votos registrados</div></div>
+      <div class="stat-card"><div class="stat-value" id="stat-lider">–</div><div class="stat-label">País líder</div></div>
+    </div>
+
+    <div class="tabs">
+      <div class="tab active" data-panel="panel-pais">Por País</div>
+      <div class="tab" data-panel="panel-continente">Por Continente</div>
+      <div class="tab" data-panel="panel-primeiros">1º Lugares</div>
+    </div>
+
+    <div class="panel active" id="panel-pais">
+      <div class="section-title">Ranking por país (pontos 3·2·1)</div>
+      <div class="ranking-list" id="ranking-pais"></div>
+    </div>
+
+    <div class="panel" id="panel-continente">
+      <div class="section-title">Ranking agregado por continente</div>
+      <div class="ranking-list" id="ranking-continente"></div>
+    </div>
+
+    <div class="panel" id="panel-primeiros">
+      <div class="section-title">Quantas vezes cada país ficou em 1º</div>
+      <div class="ranking-list" id="ranking-primeiros"></div>
+    </div>
+  </section>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAAdgthTX4Fw7xSGCk5MEOxblHK70drbX0",
+  authDomain: "pge-em-campo-2026-5457b.firebaseapp.com",
+  projectId: "pge-em-campo-2026-5457b",
+  storageBucket: "pge-em-campo-2026-5457b.firebasestorage.app",
+  messagingSenderId: "193175371500",
+  appId: "1:193175371500:web:1fecfae5b1dc421e87efc9"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+const TIMES = {
+  alemanha:{nome:"Alemanha",continente:"europa"}, franca:{nome:"França",continente:"europa"},
+  portugal:{nome:"Portugal",continente:"europa"}, italia:{nome:"Itália",continente:"europa"},
+  espanha:{nome:"Espanha",continente:"europa"},
+  brasil:{nome:"Brasil",continente:"americas"}, argentina:{nome:"Argentina",continente:"americas"},
+  mexico:{nome:"México",continente:"americas"}, canada:{nome:"Canadá",continente:"americas"},
+  chile:{nome:"Chile",continente:"americas"},
+  ruanda:{nome:"Ruanda",continente:"africa"}, africadosul:{nome:"África do Sul",continente:"africa"},
+  quenia:{nome:"Quênia",continente:"africa"}, egito:{nome:"Egito",continente:"africa"},
+  marrocos:{nome:"Marrocos",continente:"africa"},
+  singapura:{nome:"Singapura",continente:"asia"}, japao:{nome:"Japão",continente:"asia"},
+  coreiadosul:{nome:"Coreia do Sul",continente:"asia"}, india:{nome:"Índia",continente:"asia"},
+  emirados:{nome:"Emirados",continente:"asia"}
+};
+const CONTINENTE_NOME = { europa:"Europa", americas:"Américas", africa:"África", asia:"Ásia" };
+const CORES = { europa:"var(--europa)", americas:"var(--americas)", africa:"var(--africa)", asia:"var(--asia)" };
+const PONTOS = { primeiro:3, segundo:2, terceiro:1 };
+
+// LOGIN
+const inputEmail = document.getElementById("input-email");
+const inputSenha = document.getElementById("input-senha");
+const errorSenha = document.getElementById("error-senha");
+const btnEntrar = document.getElementById("btn-entrar");
+
+btnEntrar.addEventListener("click", tentarEntrar);
+inputSenha.addEventListener("keydown", e => { if (e.key === "Enter") tentarEntrar(); });
+inputEmail.addEventListener("keydown", e => { if (e.key === "Enter") tentarEntrar(); });
+
+async function tentarEntrar() {
+  errorSenha.classList.remove("show");
+  btnEntrar.disabled = true;
+  btnEntrar.innerHTML = `<span class="spinner"></span> Entrando...`;
+  try {
+    await signInWithEmailAndPassword(auth, inputEmail.value.trim(), inputSenha.value);
+    document.getElementById("screen-lock").classList.remove("active");
+    document.getElementById("screen-dashboard").classList.add("active");
+    carregar();
+  } catch (err) {
+    errorSenha.classList.add("show");
+    btnEntrar.disabled = false;
+    btnEntrar.textContent = "Entrar";
+  }
+}
+
+// TABS
+document.querySelectorAll(".tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+    document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
+    tab.classList.add("active");
+    document.getElementById(tab.dataset.panel).classList.add("active");
+  });
+});
+
+document.getElementById("btn-refresh").addEventListener("click", carregar);
+document.getElementById("btn-export").addEventListener("click", exportarExcel);
+
+let ultimosVotosCarregados = [];
+let ultimosRankings = {};
+
+async function carregar() {
+  const lastUpdate = document.getElementById("last-update");
+  lastUpdate.innerHTML = `<span class="spinner"></span> Atualizando...`;
+
+  try {
+    const snap = await getDocs(collection(db, "votos_pais"));
+    const votos = snap.docs.map(d => d.data());
+    ultimosVotosCarregados = votos;
+
+    const pontosPais = {}, primeirosPais = {}, recebidosPais = {};
+    Object.keys(TIMES).forEach(id => { pontosPais[id]=0; primeirosPais[id]=0; recebidosPais[id]=0; });
+
+    votos.forEach(v => {
+      if (v.primeiro && pontosPais.hasOwnProperty(v.primeiro)) { pontosPais[v.primeiro]+=PONTOS.primeiro; primeirosPais[v.primeiro]++; recebidosPais[v.primeiro]++; }
+      if (v.segundo && pontosPais.hasOwnProperty(v.segundo)) { pontosPais[v.segundo]+=PONTOS.segundo; recebidosPais[v.segundo]++; }
+      if (v.terceiro && pontosPais.hasOwnProperty(v.terceiro)) { pontosPais[v.terceiro]+=PONTOS.terceiro; recebidosPais[v.terceiro]++; }
+    });
+
+    const pontosContinente = { europa:0, americas:0, africa:0, asia:0 };
+    Object.entries(pontosPais).forEach(([id, pts]) => { pontosContinente[TIMES[id].continente] += pts; });
+
+    ultimosRankings = { pontosPais, primeirosPais, recebidosPais, pontosContinente };
+
+    document.getElementById("stat-total-votos").textContent = votos.length;
+    const liderId = Object.entries(pontosPais).sort((a,b)=>b[1]-a[1])[0][0];
+    document.getElementById("stat-lider").textContent = pontosPais[liderId] > 0 ? TIMES[liderId].nome : "–";
+
+    renderRankingPais(pontosPais, recebidosPais);
+    renderRankingContinente(pontosContinente);
+    renderRankingPrimeiros(primeirosPais);
+
+    lastUpdate.textContent = `Atualizado às ${new Date().toLocaleTimeString("pt-BR")}`;
+  } catch (err) {
+    console.error(err);
+    lastUpdate.textContent = "Erro ao carregar dados.";
+  }
+}
+
+function renderRankingPais(pontosPais, recebidosPais) {
+  const list = document.getElementById("ranking-pais");
+  list.innerHTML = "";
+  const ordenado = Object.entries(pontosPais).sort((a,b) => b[1]-a[1]);
+  const max = Math.max(...ordenado.map(([,p]) => p), 1);
+
+  ordenado.forEach(([id, pts], i) => {
+    const t = TIMES[id];
+    const pct = Math.round((pts/max)*100);
+    const row = document.createElement("div");
+    row.className = "ranking-row";
+    row.innerHTML = `
+      <div class="ranking-row-top">
+        <div class="ranking-pos">${i+1}º</div>
+        <div class="ranking-dot" style="background:${CORES[t.continente]}"></div>
+        <div class="ranking-name">${t.nome}</div>
+        <div class="ranking-points">${pts} pts</div>
+      </div>
+      <div class="ranking-bar-track"><div class="ranking-bar-fill" style="width:${pct}%; background:${CORES[t.continente]}"></div></div>
+    `;
+    list.appendChild(row);
+  });
+}
+
+function renderRankingContinente(pontosContinente) {
+  const list = document.getElementById("ranking-continente");
+  list.innerHTML = "";
+  const ordenado = Object.entries(pontosContinente).sort((a,b) => b[1]-a[1]);
+  const max = Math.max(...ordenado.map(([,p]) => p), 1);
+
+  ordenado.forEach(([cont, pts], i) => {
+    const pct = Math.round((pts/max)*100);
+    const row = document.createElement("div");
+    row.className = "ranking-row";
+    row.innerHTML = `
+      <div class="ranking-row-top">
+        <div class="ranking-pos">${i+1}º</div>
+        <div class="ranking-dot" style="background:${CORES[cont]}"></div>
+        <div class="ranking-name">${CONTINENTE_NOME[cont]}</div>
+        <div class="ranking-points">${pts} pts</div>
+      </div>
+      <div class="ranking-bar-track"><div class="ranking-bar-fill" style="width:${pct}%; background:${CORES[cont]}"></div></div>
+    `;
+    list.appendChild(row);
+  });
+}
+
+function renderRankingPrimeiros(primeirosPais) {
+  const list = document.getElementById("ranking-primeiros");
+  list.innerHTML = "";
+  const ordenado = Object.entries(primeirosPais).sort((a,b) => b[1]-a[1]);
+  const max = Math.max(...ordenado.map(([,v]) => v), 1);
+
+  ordenado.forEach(([id, v], i) => {
+    const t = TIMES[id];
+    const pct = Math.round((v/max)*100);
+    const row = document.createElement("div");
+    row.className = "ranking-row";
+    row.innerHTML = `
+      <div class="ranking-row-top">
+        <div class="ranking-pos">${i+1}º</div>
+        <div class="ranking-dot" style="background:${CORES[t.continente]}"></div>
+        <div class="ranking-name">${t.nome}</div>
+        <div class="ranking-points">${v}</div>
+      </div>
+      <div class="ranking-bar-track"><div class="ranking-bar-fill" style="width:${pct}%; background:${CORES[t.continente]}"></div></div>
+    `;
+    list.appendChild(row);
+  });
+}
+
+function exportarExcel() {
+  const { pontosPais, primeirosPais, recebidosPais, pontosContinente } = ultimosRankings;
+
+  // Aba 1 — Ranking por país
+  const linhasPais = Object.entries(pontosPais)
+    .sort((a,b) => b[1]-a[1])
+    .map(([id, pts], i) => ({
+      "Posição": i+1,
+      "País": TIMES[id].nome,
+      "Continente": CONTINENTE_NOME[TIMES[id].continente],
+      "Pontos (3-2-1)": pts,
+      "Vezes em 1º lugar": primeirosPais[id],
+      "Total de vezes votado (1º+2º+3º)": recebidosPais[id]
+    }));
+  const planilhaPais = XLSX.utils.json_to_sheet(linhasPais);
+  planilhaPais["!cols"] = [{wch:9},{wch:16},{wch:12},{wch:14},{wch:16},{wch:26}];
+
+  // Aba 2 — Ranking por continente
+  const linhasContinente = Object.entries(pontosContinente)
+    .sort((a,b) => b[1]-a[1])
+    .map(([cont, pts], i) => ({
+      "Posição": i+1,
+      "Continente": CONTINENTE_NOME[cont],
+      "Pontos (soma dos 5 países)": pts
+    }));
+  const planilhaContinente = XLSX.utils.json_to_sheet(linhasContinente);
+  planilhaContinente["!cols"] = [{wch:9},{wch:14},{wch:22}];
+
+  // Aba 3 — Votos brutos (um por linha)
+  const linhasVotos = ultimosVotosCarregados.map(v => ({
+    "País eleitor": TIMES[v.paisEleitor] ? TIMES[v.paisEleitor].nome : v.paisEleitor,
+    "Continente eleitor": CONTINENTE_NOME[v.continenteEleitor] || v.continenteEleitor,
+    "1º lugar": TIMES[v.primeiro] ? TIMES[v.primeiro].nome : v.primeiro,
+    "2º lugar": TIMES[v.segundo] ? TIMES[v.segundo].nome : v.segundo,
+    "3º lugar": TIMES[v.terceiro] ? TIMES[v.terceiro].nome : v.terceiro,
+    "Data/Hora": v.timestamp ? (v.timestamp.toDate ? v.timestamp.toDate() : new Date(v.timestamp)).toLocaleString("pt-BR") : ""
+  }));
+  const planilhaVotos = XLSX.utils.json_to_sheet(linhasVotos);
+  planilhaVotos["!cols"] = [{wch:14},{wch:16},{wch:14},{wch:14},{wch:14},{wch:18}];
+
+  const livro = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(livro, planilhaPais, "Ranking por País");
+  XLSX.utils.book_append_sheet(livro, planilhaContinente, "Ranking por Continente");
+  XLSX.utils.book_append_sheet(livro, planilhaVotos, "Votos Brutos");
+
+  const dataHoje = new Date().toLocaleDateString("pt-BR").replace(/\//g, "-");
+  XLSX.writeFile(livro, `votacao_pge_em_campo_${dataHoje}.xlsx`);
+}
+</script>
+</body>
+</html>
