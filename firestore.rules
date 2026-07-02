@@ -1,0 +1,33 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /sumulas/{paisId} {
+
+      // Só quem faz login (Firebase Authentication) consegue LER os
+      // dados — inclusive listar a coleção inteira. Sem login, é
+      // impossível ver o conteúdo das súmulas, mesmo sabendo o nome
+      // da coleção e mexendo no console do navegador.
+      allow read: if request.auth != null;
+
+      // Qualquer um pode ENVIAR uma súmula nova (é assim que o
+      // formulário público funciona, sem exigir login do Relator).
+      // Mas só aceita se o documento daquele país ainda não existir —
+      // isso é o que impede duas súmulas para o mesmo time. Essa
+      // checagem roda no servidor e não depende de leitura nenhuma
+      // do lado do cliente.
+      allow create: if !exists(/databases/$(database)/documents/sumulas/$(paisId))
+                    && request.resource.data.keys().hasAll([
+                         'pais', 'continente', 'capitao', 'relator',
+                         'integrantesPresentes', 'causaRaiz', 'propostaSolucao',
+                         'indicadorSucesso', 'proximoPasso', 'timestamp'
+                       ])
+                    && request.resource.data.continente in ['europa','americas','africa','asia'];
+
+      // Súmula é documento oficial — permanente, sem editar ou apagar
+      // por ninguém (nem autenticado), exceto manualmente no console.
+      allow update, delete: if false;
+    }
+  }
+}
